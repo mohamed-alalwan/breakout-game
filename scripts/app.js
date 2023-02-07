@@ -4,7 +4,6 @@ window.onload = () => {
     const ballSpeed = 5;
     const gameSpeed = 20;
     const rotateSpeed = 1.5;
-    const randomSpeed = 10000;
 
     //lives
     let lives = 3;
@@ -49,66 +48,12 @@ window.onload = () => {
     //-----------Timers---------------- 
     let updateTimer;
     let delayTimer;
-    let randomTimer;
 
     //-----------Board---------------- 
     const board = {
         element: document.querySelector('.board'),
         width: 560,
         height: 300,
-    }
-
-    //random
-    const randomDefaults = {
-        max: {x: 540, y: 240},
-        min: {y: 110},
-        width: 20,
-        height: 20,
-    };
-
-    class Random {
-        constructor(x, y)
-        {
-            this.bottomLeft = {
-                x : x, 
-                y : y,
-            };
-            this.bottomRight = {
-                x : x + randomDefaults.width, 
-                y : y,
-            };
-            this.topLeft = {
-                x : x, 
-                y : y + randomDefaults.height,
-            };
-            this.topRight = {
-                x : x + randomDefaults.width,
-                y : y + randomDefaults.height,
-            };
-        }
-        
-    }
-
-    //show random perk
-    function showRandomPerk(){
-        if(gamePaused) return;
-
-        const left = Math.floor(Math.random() * randomDefaults.max.x);
-
-        const top = Math.floor(Math.random() * randomDefaults.max.y - randomDefaults.min.y) + randomDefaults.min.y;
-
-        removeElementsByClass('random');
-
-        const randomPerk = document.createElement('div');
-
-        randomPerk.classList.add('random');
-
-        randomPerk.style.left = left + 'px';
-        randomPerk.style.top = top + 'px';
-
-        randomPerk.textContent = '?';
-
-        board.element.appendChild(randomPerk);
     }
 
     //-----------Rotating Board---------------- 
@@ -456,7 +401,6 @@ window.onload = () => {
         const scoreText = document.querySelector('.score-text');
 
         clearInterval(updateTimer);
-        clearInterval(randomTimer);
         clearInterval(delayTimer);
         document.removeEventListener('keydown', moveUser);
 
@@ -544,7 +488,6 @@ window.onload = () => {
         //clear timers
         clearInterval(updateTimer);
         clearInterval(delayTimer);
-        clearInterval(randomTimer);
 
         //reset lives
         lives = 3;
@@ -603,7 +546,7 @@ window.onload = () => {
             if(rightArrow.pressed)
                 user.moveRight();
 
-            // rotateBoard();
+            rotateBoard();
         }
     }
 
@@ -643,18 +586,12 @@ window.onload = () => {
         //update timer
         updateTimer = setInterval(update, gameSpeed);
 
-        //random timer
-        randomTimer = setInterval(showRandomPerk, randomSpeed);
-
         //scroll to center of board
         board.element.scrollIntoView({
             behavior: 'smooth',
             block: 'center', 
             inline: 'center', 
         });
-
-        //show random
-        showRandomPerk();
 
         //game started!
         gameStarted = true;

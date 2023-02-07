@@ -6,32 +6,6 @@ window.onload = () => {
     const rotateSpeed = 1.5;
     const randomSpeed = 10000;
 
-    //random grid
-    let gridCount = 30;
-    const grid = document.querySelector('.grid');
-    const gridItems = /**@type {HTMLDivElement}*/[];
-    const randomDefaults = {
-        // maxPos: {x: }
-    };
-
-    for(i=0; i < gridCount; i++){
-        let item = document.createElement('div');
-        item.classList.add('grid-item');
-        grid.appendChild(item);
-        gridItems.push(item);
-    }
-
-    //show random perk
-    function showRandomPerk(){
-        if(gamePaused) return;
-        const i = Math.floor(Math.random() * gridCount);
-        removeElementsByClass('random');
-        const randomPerk = document.createElement('div');
-        randomPerk.classList.add('random');
-        randomPerk.textContent = '?';
-        gridItems[i].appendChild(randomPerk);
-    }
-
     //lives
     let lives = 3;
     const livesDisplay = document.querySelector('#lives');
@@ -82,6 +56,59 @@ window.onload = () => {
         element: document.querySelector('.board'),
         width: 560,
         height: 300,
+    }
+
+    //random
+    const randomDefaults = {
+        max: {x: 540, y: 240},
+        min: {y: 110},
+        width: 20,
+        height: 20,
+    };
+
+    class Random {
+        constructor(x, y)
+        {
+            this.bottomLeft = {
+                x : x, 
+                y : y,
+            };
+            this.bottomRight = {
+                x : x + randomDefaults.width, 
+                y : y,
+            };
+            this.topLeft = {
+                x : x, 
+                y : y + randomDefaults.height,
+            };
+            this.topRight = {
+                x : x + randomDefaults.width,
+                y : y + randomDefaults.height,
+            };
+        }
+        
+    }
+
+    //show random perk
+    function showRandomPerk(){
+        if(gamePaused) return;
+
+        const left = Math.floor(Math.random() * randomDefaults.max.x);
+
+        const top = Math.floor(Math.random() * randomDefaults.max.y - randomDefaults.min.y) + randomDefaults.min.y;
+
+        removeElementsByClass('random');
+
+        const randomPerk = document.createElement('div');
+
+        randomPerk.classList.add('random');
+
+        randomPerk.style.left = left + 'px';
+        randomPerk.style.top = top + 'px';
+
+        randomPerk.textContent = '?';
+
+        board.element.appendChild(randomPerk);
     }
 
     //-----------Rotating Board---------------- 

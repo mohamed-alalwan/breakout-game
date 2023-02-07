@@ -161,3 +161,20 @@ nav h2:hover{
 .controls-container img{
     width: 30px;
 }
+
+/*random*/
+.random{
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    background-color: darkorange;
+    border-radius: 2.5px;
+    border: solid 2px orange;
+    text-align: center;
+    color: white;
+    font-size: 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}

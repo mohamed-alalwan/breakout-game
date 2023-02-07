@@ -3,12 +3,9 @@ window.onload = () => {
     const gameSpeed = 20;
     const startSpeed = 200;
     const delaySpeed = 1000;
-    const userSpeed = 5; //8
-    const ballSpeed = 2; //5
+    let userSpeed = 5; //8
+    let ballSpeed = 3; //5
     let rotateSpeed = 0.5; //1.5
-
-    //second ball spawn
-    let secondBallSpawn = false;
 
     //lives
     let lives = 3;
@@ -29,7 +26,6 @@ window.onload = () => {
     const paddle = /**@type {HTMLAudioElement} */ document.querySelector('#paddle');
     const lose = /**@type {HTMLAudioElement} */ document.querySelector('#lose');
     const win = /**@type {HTMLAudioElement} */ document.querySelector('#win');
-    const second = /**@type {HTMLAudioElement} */ document.querySelector('#second');
     const background = /**@type {HTMLAudioElement} */ document.querySelector('#background');
     background.volume = 0.2;
 
@@ -73,9 +69,9 @@ window.onload = () => {
 
     //-----------Rotating Board---------------- 
     let degrees = 0;
-    function rotateBoard(clockwise){
-        clockwise ? degrees += rotateSpeed : degrees -= rotateSpeed;
+    function rotateBoard(){
         board.element.style.transform = `rotate(${degrees}deg)`;
+        degrees += rotateSpeed;
     }
 
     //-----------Blocks---------------- 
@@ -137,6 +133,35 @@ window.onload = () => {
             block.element = div;
             board.element.appendChild(div);
         });
+    }
+
+    //random
+    const randomDefaults = {
+        width: 20,
+        height: 20
+    }
+
+    let randomPerks = [];
+
+    //show random perk in board
+    function showRandomPerk(block){
+
+        if(Math.random() < 0.75) return;
+
+        const left = block.bottomLeft.x + randomDefaults.width * 2;
+        const top = block.bottomLeft.y;
+
+        const randomPerkDiv = document.createElement('div');
+        randomPerkDiv.classList.add('random');
+        randomPerkDiv.style.left = left + 'px';
+        randomPerkDiv.style.bottom = top + 'px';
+        randomPerkDiv.textContent = '?';
+
+        const randomPerk = new Block(left, top);
+        randomPerk.element = randomPerkDiv;
+        board.element.appendChild(randomPerkDiv);
+
+        randomPerks.push(randomPerk);
     }
 
     //-----------User----------------
@@ -251,8 +276,9 @@ window.onload = () => {
                     block.element.remove();
                     blocks.splice(i, 1);
                     this.changeDirection();
-                    score += 100;
+                    score++;
                     scoreDisplay.textContent = score;
+                    delayTimer = setTimeout(showRandomPerk, startSpeed, block);
 
                     //check for win
                     if (blocks.length === 0) {
@@ -265,6 +291,24 @@ window.onload = () => {
                     bounce.play();
                 }
                 
+            });
+
+            //random perk collision
+            randomPerks.forEach((randomPerk, i) => {
+                if(
+                    (
+                        this.currentPos.x > randomPerk.bottomLeft.x &&
+                        this.currentPos.x < randomPerk.bottomRight.x
+                    ) 
+                    &&
+                    (
+                        (this.currentPos.y + this.radius) > randomPerk.bottomLeft.y &&
+                        this.currentPos.y < randomPerk.topLeft.y
+                    )
+                ){
+                    randomPerk.element.remove();
+                    randomPerks.splice(i, 1);
+                }
             });
 
             //wall collision
@@ -502,105 +546,10 @@ window.onload = () => {
         container.style.display = 'flex';
     }
 
-    function updateSpeeds(){
-        if(blocks.length <= 13){
-            user.speed = 5.5; 
-            balls.forEach(ball => {
-                ball.speed = 2.5;
-                ball.direction.x > 0 ? ball.direction.x = 2.5: ball.direction.x = -2.5;
-                ball.direction.y > 0 ? ball.direction.y = 2.5: ball.direction.y = -2.5;
-            });
-            rotateSpeed = 0.5; //1.5
-            rotateBoard(true);
-        }
-        if(blocks.length <= 11){
-            user.speed = 6; 
-            balls.forEach(ball => {
-                ball.speed = 3;
-                ball.direction.x > 0 ? ball.direction.x = 3: ball.direction.x = -3;
-                ball.direction.y > 0 ? ball.direction.y = 3: ball.direction.y = -3; 
-            });
-            rotateSpeed = 0.75; //1.5
-            rotateBoard(true);
-        }
-        if(blocks.length <= 9){
-            user.speed = 6.5; 
-            balls.forEach(ball => {
-                ball.speed = 3.5;
-                ball.direction.x > 0 ? ball.direction.x = 3.5: ball.direction.x = -3.5;
-                ball.direction.y > 0 ? ball.direction.y = 3.5: ball.direction.y = -3.5;
-            });
-            rotateSpeed = 1; //1.5
-            rotateBoard(true);
-        }
-        if(blocks.length == 10 && !secondBallSpawn){
-            secondBallSpawn = true;
-            let ball = new Ball(
-                document.querySelector('.ball'),
-                {
-                    x: board.width/2 - ballDefaults.radius/2,
-                    y: user.currentPos.y + ballDefaults.radius,
-                },
-                {
-                    x: board.width/2 - ballDefaults.radius/2,
-                    y: user.currentPos.y + ballDefaults.radius + 100,
-                },
-                ballDefaults.radius,
-                ballSpeed, 
-                {x: ballSpeed, y : ballSpeed}
-            );
-            balls.push(ball);
-            ball.createElement();
-            ball.draw();
-
-            second.play();
-        }
-        if(blocks.length <= 7){
-            user.speed = 7; 
-            balls.forEach(ball => {
-                ball.speed = 4;
-                ball.direction.x > 0 ? ball.direction.x = 4: ball.direction.x = -4;
-                ball.direction.y > 0 ? ball.direction.y = 4: ball.direction.y = -4;
-            });
-        }
-        if(blocks.length <= 5){
-            user.speed = 7.5; 
-            balls.forEach(ball => {
-                ball.speed = 4.5;
-                ball.direction.x > 0 ? ball.direction.x = 4.5: ball.direction.x = -4.5;
-                ball.direction.y > 0 ? ball.direction.y = 4.5: ball.direction.y = -4.5;
-            });
-            rotateSpeed = 1.25; //1.5
-            rotateBoard(false);
-        }
-        if(blocks.length <= 3){
-            user.speed = 8; 
-            balls.forEach(ball => {
-                ball.speed = 5;
-                ball.direction.x > 0 ? ball.direction.x = 5: ball.direction.x = -5;
-                ball.direction.y > 0 ? ball.direction.y = 5: ball.direction.y = -5;
-            });
-        }
-        if(blocks.length <= 1){
-            rotateSpeed = 1.5; //1.5
-            rotateBoard(false);
-        }
-    }
-
     //-----------Restart----------------
     function restart(){
         //set start to false
         gameStarted = false;
-
-        //reset speeds
-        user.speed = userSpeed; 
-        balls.forEach(ball => {
-            ball.speed = ballSpeed;
-        });
-        rotateSpeed = 0.5;
-
-        //reset second ball spawn
-        secondBallSpawn = false;
 
         //clear timers
         clearInterval(updateTimer);
@@ -630,6 +579,9 @@ window.onload = () => {
         removeElementsByClass('user');
         user.currentPos.x = user.startPos.x;
         user.currentPos.y = user.startPos.y;
+
+        //remove random
+        removeElementsByClass('random');
 
         //make sure pause screen off
         if(gamePaused) pauseMenuToggle();
@@ -663,8 +615,8 @@ window.onload = () => {
             if(rightArrow.pressed)
                 user.moveRight();
 
-            //update speeds
-            updateSpeeds();
+            if(blocks.length < 12)
+            rotateBoard();
         }
     }
 

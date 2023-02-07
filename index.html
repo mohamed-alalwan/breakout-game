@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./scripts/app.js"></script>
+    <link rel="stylesheet" href="./styles/main.css">
+    <title>Break Out</title>
+</head>
+<body>
+    <h1>Break Out Game</h1>
+    <nav>
+        <h2 class="start">Start</h2>
+        <h2 class="controls">Controls</h2>
+    </nav>
+    <div class="controls-container">
+        <div class="controls-item">
+            <h3>Movement</h3>
+            <div>
+                <img src="./images/left-arrow.png" alt="Left Arrow">
+                <img src="./images/right-arrow.png" alt="Right Arrow">
+            </div>
+        </div>
+        <div class="controls-item">
+            <h3>Pause Menu</h3>
+            <div>
+                <img src="./images/q-key.png" alt="Q Button">
+            </div>
+        </div>
+        <div class="controls-item">
+            <h3>Quick Restart</h3>
+            <div>
+                <img src="./images/r-key.png" alt="Q Button">
+            </div>
+        </div>
+    </div>
+
+    
+    
+    <div class="board">
+        <h3 class="score-header">Score: <span id="score">0</span></h3>
+        <h3 class="lives-header">Lives: <span id="lives">3</span></h3>
+        <div class="grid">
+            <div class="grid-item">
+                                <div class="random">?</div>
+                            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <h5>&copy;2023 Mohamed Alalwan</h5>
+    </footer>
+
+    <div class="game-over">
+        <h1 class="score-message"></h1>
+        <h1 class="score-text"></h1>
+        <h2 class="restart">Restart</h2>
+    </div>
+
+    <div class="pause-menu">
+        <h2 class="resume">Resume</h2>
+        <h2 class="restart">Restart</h2>
+    </div>
+
+    <audio id="bounce" src="./sounds/bounce.wav"></audio>
+    <audio id="paddle" src="./sounds/paddle.wav"></audio>
+    <audio id="lose" src="./sounds/lose.mp3"></audio>
+    <audio id="win" src="./sounds/victory.mp3"></audio>
+
+</body>
+</html>

@@ -53,8 +53,9 @@ window.onload = () => {
     //-----------Keys---------------- 
     const leftArrow = {key : 'ArrowLeft', pressed: false}
     const rightArrow = {key : 'ArrowRight', pressed: false}
-    const pauseKey = {key: 'q', pressed: false}
+    const pauseKey = {key: 'p', pressed: false}
     const restartKey = {key: 'r', pressed: false}
+    const muteKey = {key: 'm', pressed: false}
     
     //-----------Score---------------- 
     const scoreDisplay = document.querySelector('#score');
@@ -390,6 +391,9 @@ window.onload = () => {
             case restartKey.key:
                 restart();
                 break;
+            case muteKey.key:
+                muteToggle();
+                break;
         }
     }
 
@@ -453,6 +457,24 @@ window.onload = () => {
             win.currentTime = 0;
         }
         
+    }
+
+    //mute toggle
+    function muteToggle(){
+        muteKey.pressed = ! muteKey.pressed;
+        if(muteKey.pressed){
+            document.querySelectorAll('audio').forEach(audio =>{
+                audio.volume = 0;
+            });
+        }else{
+            document.querySelectorAll('audio').forEach(audio =>{
+                if(audio.id != 'background')
+                    audio.volume = 1;
+                else{
+                    audio.volume = 0.2;
+                }
+            });
+        }
     }
 
     //remove by class name
@@ -715,6 +737,13 @@ window.onload = () => {
             behavior: 'smooth',
             block: 'center', 
             inline: 'center', 
+        });
+
+        //prevent defaults on keys
+        window.addEventListener('keydown', function(e){
+            if(e.key === 'ArrowDown' || e.key === 'ArrowUp'){
+                e.preventDefault();
+            }
         });
 
         //game started!

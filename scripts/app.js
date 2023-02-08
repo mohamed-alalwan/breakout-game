@@ -73,8 +73,8 @@ window.onload = () => {
 
     //-----------Rotating Board---------------- 
     let degrees = 0;
-    function rotateBoard(clockwise){
-        clockwise ? degrees += rotateSpeed : degrees -= rotateSpeed;
+    function rotateBoard(){
+        degrees += rotateSpeed;
         board.element.style.transform = `rotate(${degrees}deg)`;
     }
 
@@ -510,8 +510,8 @@ window.onload = () => {
                 ball.direction.x > 0 ? ball.direction.x = 2.5: ball.direction.x = -2.5;
                 ball.direction.y > 0 ? ball.direction.y = 2.5: ball.direction.y = -2.5;
             });
-            rotateSpeed = 0.5; //1.5
-            rotateBoard(true);
+            rotateSpeed = 0.5;
+            rotateBoard();
         }
         if(blocks.length <= 11){
             user.speed = 6; 
@@ -520,8 +520,8 @@ window.onload = () => {
                 ball.direction.x > 0 ? ball.direction.x = 3: ball.direction.x = -3;
                 ball.direction.y > 0 ? ball.direction.y = 3: ball.direction.y = -3; 
             });
-            rotateSpeed = 0.75; //1.5
-            rotateBoard(true);
+            rotateSpeed = 0.75;
+            rotateBoard();
         }
         if(blocks.length <= 9){
             user.speed = 6.5; 
@@ -530,8 +530,8 @@ window.onload = () => {
                 ball.direction.x > 0 ? ball.direction.x = 3.5: ball.direction.x = -3.5;
                 ball.direction.y > 0 ? ball.direction.y = 3.5: ball.direction.y = -3.5;
             });
-            rotateSpeed = 1; //1.5
-            rotateBoard(true);
+            rotateSpeed = 1;
+            rotateBoard();
         }
         if(blocks.length == 10 && !secondBallSpawn){
             secondBallSpawn = true;
@@ -570,8 +570,8 @@ window.onload = () => {
                 ball.direction.x > 0 ? ball.direction.x = 4.5: ball.direction.x = -4.5;
                 ball.direction.y > 0 ? ball.direction.y = 4.5: ball.direction.y = -4.5;
             });
-            rotateSpeed = 1.25; //1.5
-            rotateBoard(false);
+            rotateSpeed = -1.25;
+            rotateBoard();
         }
         if(blocks.length <= 3){
             user.speed = 8; 
@@ -580,10 +580,12 @@ window.onload = () => {
                 ball.direction.x > 0 ? ball.direction.x = 5: ball.direction.x = -5;
                 ball.direction.y > 0 ? ball.direction.y = 5: ball.direction.y = -5;
             });
+            rotateSpeed = -1.5;
+            rotateBoard();
         }
         if(blocks.length <= 1){
-            rotateSpeed = 1.5; //1.5
-            rotateBoard(false);
+            rotateSpeed = -1.5;
+            rotateBoard();
         }
     }
 
@@ -638,6 +640,7 @@ window.onload = () => {
         if(gameOver) gameOverToggle();
 
         //reset rotate
+        rotateSpeed = 0.5;
         degrees = 0;
         board.element.style.transform = `rotate(${degrees}deg)`;
 

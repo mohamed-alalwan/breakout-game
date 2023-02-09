@@ -304,7 +304,6 @@ window.onload = () => {
                 } 
                 lives--;
                 livesDisplay.textContent = lives;
-                console.log(lives);
                 if(lives > 0) {
                     clearInterval(updateTimer);
                     //reset user and ball and spawn them again
@@ -366,20 +365,6 @@ window.onload = () => {
             ballSpeed, 
             {x: ballSpeed, y : ballSpeed}
         ), 
-        // new Ball(
-        //     document.querySelector('.ball'),
-        //     {
-        //         x: board.width/2 - ballDefaults.radius/2,
-        //         y: user.currentPos.y + ballDefaults.radius,
-        //     },
-        //     {
-        //         x: board.width/2 - ballDefaults.radius/2,
-        //         y: user.currentPos.y + ballDefaults.radius,
-        //     },
-        //     ballDefaults.radius,
-        //     -ballSpeed, 
-        //     {x: -ballSpeed, y : -ballSpeed}
-        // ),
     ];
 
     //key press check

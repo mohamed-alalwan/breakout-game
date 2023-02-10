@@ -296,7 +296,7 @@ window.onload = () => {
             }
 
             //hit ground
-            if(this.currentPos.y <= 0){
+            if(this.currentPos.y < 0){
                 if(balls.length > 1){
                     this.element.remove();
                     balls.splice(balls.indexOf(this), 1);
